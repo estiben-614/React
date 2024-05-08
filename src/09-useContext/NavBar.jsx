@@ -1,9 +1,34 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export const NavBar = () => (
   <>
-    <Link to={"/"}> Inicio </Link>
-    <Link to={"/home"}> Home </Link>
-    <Link to={"/login"}> Login </Link>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <Link className="navbar-brand" to="/">
+        useContext
+      </Link>
+      <div className="collapse navbar-collapse" id="navbarNav">
+        <ul className="navbar-nav">
+          <NavLink
+            to={"/"}
+            className={(args) => `nav-link ${args.isActive ? "active" : ""}`}
+          >
+            Home
+          </NavLink>
+          <NavLink
+            to={"/about"}
+            className={(args) => `nav-link ${args.isActive ? 'active' : ''}`}
+            >
+                About
+            </NavLink>
+            <NavLink
+            to={"/Login"}
+            className={(args) => `nav-link ${args.isActive ? 'active' : ''}`}
+            >
+                Login
+            </NavLink>
+            
+        </ul>
+      </div>
+    </nav>
   </>
 );
