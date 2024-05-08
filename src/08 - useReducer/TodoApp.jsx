@@ -1,46 +1,43 @@
-import { useEffect, useReducer } from "react";
-import { todoReducer } from "./todoReducer";
 import TodoList from "./TodoList";
 import TodoAdd from "./TodoAdd";
-
+import { useTodo } from "../hooks/useTodo";
 
 const TodoApp = () => {
-  const initialValues = JSON.parse(localStorage.getItem('todo')) || [];
-  const [todos, dispatch] = useReducer(todoReducer, initialValues);
-
-  const onHandleTodoForm = (event, value) => {
-    event.preventDefault();
-    if (value.length <= 1) return;
-    const newTodo = {
-      id: new Date().getTime(),
-      description: value,
-      done: false,
-    };
-    const action = {
-      type: 'ADD',
-      payload: newTodo
-    }
-    dispatch(action)
-  };
-
-  useEffect(() => {
-    localStorage.setItem('todo', JSON.stringify(todos))
-  }, [todos])
+  const {
+    todos,
+    onHandleTodoForm,
+    onHandleCompleteTodo,
+    onHandleDeleteTodo,
+  } = useTodo()
   return (
     <>
-      <h1>Todo App</h1>
+      <div className="row">
+        <div className="col-7">
+          <h1>{`TodoApp (${todos.length})`}</h1>
+        </div>
+        <div className="col-2">
+          <h3>{`Pendientes ${todos.filter((todo) => !todo.done).length}`}</h3>
+        </div>
+        <div className="col-3">
+        <h3>{`Completados ${todos.filter((todo) => todo.done).length}`}</h3>
+        </div>
+      </div>
       <hr />
 
       <div className="row">
         <div className="col-7">
           <ul className="list-group">
-            <TodoList todos={todos} />
+            <TodoList
+              todos={todos}
+              onHandleCompleteTodo={onHandleCompleteTodo}
+              onHandleDeleteTodo={onHandleDeleteTodo}
+            />
           </ul>
         </div>
         <div className="col-5">
           <h4>Agregar TODO</h4>
           <hr />
-          <TodoAdd onHandleTodoForm={onHandleTodoForm}/>
+          <TodoAdd onHandleTodoForm={onHandleTodoForm} />
         </div>
       </div>
     </>
